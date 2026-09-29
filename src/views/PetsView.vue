@@ -2,28 +2,32 @@
 import { onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
-const pets = ref([]);
-const tutores = ref([]);
+const pets = ref([]); // lista de pets vazia
+const tutores = ref([]); // lista de tutores vazia;
 
+// chamando a minha API geral:
 const API_URL = 'http://localhost:3000';
 
+// chamar a minha API para listar todos os pets e tutores;
 async function carregarDados() {
   const respostaPets = await fetch(`${API_URL}/pets`);
   pets.value = await respostaPets.json();
 
   const respostaTutores = await fetch(`${API_URL}/tutores`);
   tutores.value = await respostaTutores.json();
-  console.log('PETS - ', pets.value);
-  console.log('TUTORES - ', tutores.value);
+
+  console.table( pets.value);
+  console.table( tutores.value);
 }
 
+// exibir o nome do tutor
 function nomeDoTutor(tutorId) {
   for(const tutor of tutores.value) {
     if(tutor.id === tutorId) {
       return tutor.nome;
     }
   }
-  return 'oops, tutor não encontrado!';
+  return 'oopps, tutor não encontrado!';
 }
 
 onMounted(carregarDados);
@@ -31,12 +35,20 @@ onMounted(carregarDados);
 
 <template>
   <div>
-      <header class="mb-4">
+    <header class="mb-4">
       <h1 class="text-2xl font-bold">Listagem de Pets</h1>
       <p class="text-body-secondary mb-0">
         Listagem dos Pets cadastrados no sistema.
       </p>
     </header>
+
+    <RouterLink
+      class="btn btn-primary btn-outline"
+      to="/pets/novo"
+    >
+      Novo pet
+    </RouterLink>
+    
 
     <table class="table table-striped table-hover">
       <thead>
