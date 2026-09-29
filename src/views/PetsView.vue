@@ -5,8 +5,10 @@ import { RouterLink } from 'vue-router';
 const pets = ref([]); // lista de pets vazia
 const tutores = ref([]); // lista de tutores vazia;
 
+
 // chamando a minha API geral:
 const API_URL = 'http://localhost:3000';
+
 
 // chamar a minha API para listar todos os pets e tutores;
 async function carregarDados() {
@@ -34,6 +36,7 @@ onMounted(carregarDados);
 </script>
 
 <template>
+
   <div>
     <header class="mb-4">
       <h1 class="text-2xl font-bold">Listagem de Pets</h1>
