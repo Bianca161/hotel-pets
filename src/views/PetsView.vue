@@ -1,27 +1,63 @@
-<template scoped>
-    
-  <header class="mb-4">
+<script setup>
+import { onMounted, ref } from 'vue';
+import { RouterLink } from 'vue-router';
 
+const pets = ref([]);
+const tutores = ref([]);
 
-    <h1 class="text2xl font-bold">
-        Listagem de Pets
-    </h1>
+const API_URL = 'http://localhost:3000';
 
-    <p class="text-body-secodary mb-0">
-      Listagem dos Pets cadastrados no sistema
-    </p>
-  </header>
+async function carregarDados() {
+  const respostaPets = await fetch(`${API_URL}/pets`);
+  pets.value = await respostaPets.json();
 
-  <RouterLink
-    class="btn btn-primary"
-    :to="{ name: 'novo-pet' }"
-  >
-    <i
-      class="bi bi-plus me-2"
-      aria-hidden="true"
-    ></i>
+  const respostaTutores = await fetch(`${API_URL}/tutores`);
+  tutores.value = await respostaTutores.json();
+  console.log('PETS - ', pets.value);
+  console.log('TUTORES - ', tutores.value);
+}
 
-    Adicionar Pet
-  </RouterLink>
+function nomeDoTutor(tutorId) {
+  for(const tutor of tutores.value) {
+    if(tutor.id === tutorId) {
+      return tutor.nome;
+    }
+  }
+  return 'oops, tutor não encontrado!';
+}
 
+onMounted(carregarDados);
+</script>
+
+<template>
+  <div>
+      <header class="mb-4">
+      <h1 class="text-2xl font-bold">Listagem de Pets</h1>
+      <p class="text-body-secondary mb-0">
+        Listagem dos Pets cadastrados no sistema.
+      </p>
+    </header>
+
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Espécie</th>
+          <th>Tutor</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr
+          v-for="pet in pets" :key="pet.id" >
+          <td>{{ pet.id }}</td>
+          <td>{{ pet.nome }}</td>
+          <td>{{ pet.especie }}</td>
+          <td>{{ nomeDoTutor(pet.tutorId) }}</td>
+          
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
