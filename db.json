@@ -47,12 +47,6 @@
       "especie": "Gato",
       "tutorId": "2",
       "id": "ByOkBipfuFk"
-    },
-    {
-      "nome": "veloz",
-      "especie": "Tartaruga",
-      "tutorId": "",
-      "id": "BFDJSjvMbbI"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

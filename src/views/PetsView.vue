@@ -37,6 +37,7 @@ async function excluirPet(id) {
     await fetch(`${API_URL}/pets/${id}`, {
       method: 'DELETE',
     });
+    await carregarDados(); // recarregar a lista de pets após a exclusão  
   }
 }
 
