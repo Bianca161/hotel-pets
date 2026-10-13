@@ -1,3 +1,4 @@
+
 <script setup>
 import { onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
@@ -56,6 +57,7 @@ onMounted(carregarDados);
           <th>Nome</th>
           <th>Espécie</th>
           <th>Tutor</th>
+           <th>Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -67,6 +69,7 @@ onMounted(carregarDados);
           <td>{{ pet.nome }}</td>
           <td>{{ pet.especie }}</td>
           <td>{{ nomeDoTutor(pet.tutorId) }}</td>
+          <td> <RouterLink :to="`pets/${pet.id}`">Visualizar</RouterLink></td>
         </tr>
       </tbody>
     </table>
