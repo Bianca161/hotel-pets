@@ -40,6 +40,18 @@ import { RouterLink } from 'vue-router';
         ></i>
         Tutores
     </RouterLink>
+
+      <RouterLink
+        class="nav-link"
+        active-class="active"
+        to="/tutores/novo"
+      >
+        <i
+          class="bi bi-plus-circle me-2"
+          aria-hidden="true"
+        ></i>
+        Cadastrar tutor
+      </RouterLink>
     </div>
   </nav>
 </template>

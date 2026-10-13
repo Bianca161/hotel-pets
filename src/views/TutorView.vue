@@ -15,6 +15,17 @@ async function carregarDados() {
   console.table(tutores.value);
 }
 
+async function removerTutor(id) {
+  const confirmarExclusao = window.confirm('Deseja realmente excluir este tutor?');
+
+  if (confirmarExclusao) {
+    await fetch(`${API_URL}/tutores/${id}`, {
+      method: 'DELETE',
+    });
+    await carregarDados(); // recarregar a lista de tutores após a exclusão  
+  }
+}
+
 onMounted(carregarDados);
 </script>
 
@@ -41,6 +52,7 @@ onMounted(carregarDados);
           <th>Nome</th>
           <th>Telefone</th>
           <th>Ações</th>
+          <th>Email</th>
         </tr>
       </thead>
       <tbody>
@@ -54,9 +66,9 @@ onMounted(carregarDados);
           <td><RouterLink :to="`tutores/${tutor.id}`">Visualizar</RouterLink></td>
           <button
             class="btn btn-danger"
-            @click="excluirPet(pet.id)"
+            @click="removerTutor(tutor.id)"
           >
-            Excluir
+            Remover
           </button>
         </tr>
       </tbody>
