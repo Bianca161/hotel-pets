@@ -65,6 +65,7 @@ onMounted(carregarTutores);
     >
 
     <h1>Dados do Tutor </h1>
+
       <!-- ID do tutor -->
       <div class="col-md-6">
         <label
@@ -88,7 +89,7 @@ onMounted(carregarTutores);
           for="nome"
           class="form-label"
         >
-          Nome do Tutor:
+          Nome Completo
         </label>
         <input
           type="text"
@@ -105,7 +106,7 @@ onMounted(carregarTutores);
           for="telefone"
           class="form-label"
         >
-          Telefone do Tutor:
+          Telefone/Celular/Whatsapp
         </label>
         <input
           type="text"
