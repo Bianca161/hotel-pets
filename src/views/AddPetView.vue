@@ -102,6 +102,8 @@ onMounted(carregarTutores);
           <option value="Gato">Gato</option>
           <option value="Coelho">Coelho</option>
           <option value="Tartaruga">Tartaruga</option>
+          <option value="Hamster">Hamster</option>
+          <option value="Cavalo">Cavalo</option>
         </select>
       </div>
       <!-- nome do tutor responsavel pelo pet -->

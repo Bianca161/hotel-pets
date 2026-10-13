@@ -18,7 +18,7 @@ async function carregarPet() {
 
   const respostaTutor = await fetch (`${API_URL}/tutores/${pet.value.tutorId}`);
   tutor.value = await respostaTutor.json();
-  console.log(`Tutor``, tutor.value`);
+  console.log(`Tutor`, `${tutor.value}`);
 }
 
 onMounted(carregarPet);

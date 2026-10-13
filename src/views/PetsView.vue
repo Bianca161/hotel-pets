@@ -1,4 +1,3 @@
-
 <script setup>
 import { onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
@@ -29,6 +28,16 @@ function nomeDoTutor(tutorId) {
     }
   }
   return 'Oopps, Tutor não encontrado!';
+}
+
+async function excluirPet(id) {
+  const confirmarExclusao = window.confirm('Deseja realmente excluir este pet?');
+
+  if (confirmarExclusao) {
+    await fetch(`${API_URL}/pets/${id}`, {
+      method: 'DELETE',
+    });
+  }
 }
 
 onMounted(carregarDados);
@@ -70,6 +79,7 @@ onMounted(carregarDados);
           <td>{{ pet.especie }}</td>
           <td>{{ nomeDoTutor(pet.tutorId) }}</td>
           <td> <RouterLink :to="`pets/${pet.id}`">Visualizar</RouterLink></td>
+          <button class="btn btn-danger" @click="excluirPet(pet.id)">Excluir</button>
         </tr>
       </tbody>
     </table>
