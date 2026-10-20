@@ -9,10 +9,10 @@ const tutor = ref(null);
 const petsDoTutor = ref([]); 
 
 async function removerPets(id) {
-  const confirmarExclusao = window.confirm('Deseja realmente excluir este tutor?');
+  const confirmarExclusao = window.confirm('Deseja realmente excluir este pet?');
 
   if (confirmarExclusao) {
-    await fetch(`${API_URL}/tutores/${id}`, {
+    await fetch(`${API_URL}/pets/${id}`, {
       method: 'DELETE',
     });
     await carregarTutorEPets(); // recarregar a lista de tutores após a exclusão

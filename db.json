@@ -5,14 +5,16 @@
       "nome": "Ana",
       "telefone": "47999990000",
       "email": "ana@email.com",
-      "cpf_cnpj": "12345678900"
+      "cpf_cnpj": "12345678900",
+      "data": "1990-05-15"
     },
     {
       "id": "2",
       "nome": "Carlos",
       "telefone": "47988880000",
       "email": "carlos@email.com",
-      "cpf_cnpj": "98765432100"
+      "cpf_cnpj": "98765432100",
+      "data": "1985-10-20"
     },
     {
       "nome": "Bianca",
@@ -33,34 +35,28 @@
   ],
   "pets": [
     {
-      "id": "1",
-      "nome": "Safira",
+      "nome": "Mel",
       "especie": "Cachorro",
-      "tutorId": "1"
+      "tutorId": "FgdWqvBAw08",
+      "id": "0H4-UqztND8"
     },
     {
-      "id": "2",
-      "nome": "Nino",
-      "especie": "Gato",
-      "tutorId": "1"
+      "nome": "Veloz",
+      "especie": "Tartaruga",
+      "tutorId": "2",
+      "id": "MIxVnDq-pjM"
     },
     {
-      "nome": "nevinha",
+      "nome": "Bolinha de neve",
       "especie": "Coelho",
       "tutorId": "1",
-      "id": "iJ43pkEaU_o"
+      "id": "sG9-D90BitY"
     },
     {
-      "nome": "ggg",
-      "especie": "Hamster",
-      "tutorId": "FgdWqvBAw08",
-      "id": "OKcK3Or27KQ"
-    },
-    {
-      "nome": "a",
-      "especie": "Cavalo",
-      "tutorId": "FgdWqvBAw08",
-      "id": "5NT0dcTPM-4"
+      "nome": "Babalu",
+      "especie": "Gato",
+      "tutorId": "2",
+      "id": "UbfWEd29BIY"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
