@@ -50,7 +50,11 @@ onMounted(carregarDados);
         <tr>
           <th>id</th>
           <th>Nome</th>
+          <th>CPF/CNPJ</th>
           <th>Telefone</th>
+          <th>E-mail</th>
+          <th>Pets (Quantidade)</th>
+          <th>Nomes dos Pets</th>
           <th>Ações</th>
         </tr>
       </thead>
@@ -61,6 +65,12 @@ onMounted(carregarDados);
         >
           <td>{{ tutor.id }}</td>
           <td>{{ tutor.nome }}</td>
+          <td>{{ tutor.cpf_cnpj }}</td>
+          <td>{{ tutor.email }}</td>
+          <td>{{ tutor.endereco }}</td>
+          <td>{{ tutor.cidade }}</td>
+          <td>{{ tutor.estado }}</td>
+          <td>{{ tutor.cep }}</td>
           <td>{{ tutor.telefone }}</td>
           <td>
             <RouterLink :to="`/tutores/${tutor.id}`" class="btn btn-sm">Visualizar</RouterLink>

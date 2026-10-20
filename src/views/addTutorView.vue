@@ -15,6 +15,17 @@ const tutores = ref([]);
 const novoTutor = ref({
   nome: '',
   telefone: '',
+  cpf: '',
+  email: '',
+  data: '',
+  endereco: {
+    rua: '',
+    numero: '',
+    bairro: '',
+    cidade: '',
+    estado: '',
+    cep: '',
+  },
 });
 
 // buscar todos os tutores que estão salvo na aplicação
@@ -64,7 +75,12 @@ onMounted(carregarTutores);
       @submit.prevent="salvarTutor"
     >
 
-    <h1>Dados do Tutor </h1>
+    <!---- parte do formulario -->
+     <div class="row">
+        <div class="col-md-12 mt-3">
+          <h1 class="text-2xl font-bold">Dados do Tutor</h1>
+        </div>
+      </div>
 
       <!-- nome do tutor -->
       <div class="col-md-6">
@@ -79,6 +95,23 @@ onMounted(carregarTutores);
           class="form-control"
           id="nome"
           v-model="novoTutor.nome"
+          required
+        />
+      </div>
+
+      <!-- CPF/CNPJ do tutor -->
+      <div class="col-md-6">
+        <label
+          for="cpf"
+          class="form-label"
+        >
+          CPF/CNPJ
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          id="cpf"
+          v-model="novoTutor.cpf"
           required
         />
       </div>
@@ -100,19 +133,167 @@ onMounted(carregarTutores);
         />
       </div>
 
+      <!-- Email do tutor -->
+      <div class="col-md-6">
+        <label
+          for="email"
+          class="form-label"
+        >
+          Email
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          id="email"
+          v-model="novoTutor.email"
+          required
+        />
+      </div>
+
+      <!-- Data Nascimento do tutor -->
+      <div class="col-md-6">
+        <label
+          for="data"
+          class="form-label"
+        >
+          Data Nascimento
+        </label>
+        <input
+          type="date"
+          class="form-control"
+          id="data"
+          v-model="novoTutor.data"
+          required
+        />
+      </div>
+
       <div class="col-12 d-flex gap-2">
+
         <RouterLink
-          class="btn btn-secondary" to="/tutores"
+          class="btn btn-secondary mt-3"
+          to="/tutores"
         >
           Cancelar
         </RouterLink>
 
         <button
-          class="btn btn-success"
-          type="submit"
+          class="btn btn-success
+          type mt-3"
         >
           Cadastrar Tutor
         </button>
+      </div>
+
+      <!---2 Parte ----->
+
+      <div class="row">
+        <div class="col-md-12 mt-3">
+          <h4 class="text-2xl font-bold">Endereço</h4>
+        </div>
+      </div>
+
+      <!-- CEP do Tutor -->
+      <div class="row">
+        <div class="col-md-4">
+          <label
+            for="cep"
+            class="form-label"
+          >
+            CEP
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="cep"
+            v-model="novoTutor.endereco.cep"
+            required
+            @blur="buscaCep(novoTutor.endereco.cep)"
+          />
+        </div>
+
+        <div class="col-12 col-md-4">
+          <!-- RUA -->
+          <label
+            for="rua"
+            class="form-label"
+          >
+            Rua:
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="rua"
+            v-model="novoTutor.endereco.rua"
+            required
+          />
+        </div>
+        <!-- Telefone do Tutor -->
+        <div class="col-md-4">
+          <label
+            for="numero"
+            class="form-label"
+          >
+            Número:
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="numero"
+            v-model="novoTutor.endereco.numero"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <label
+            for="bairro"
+            class="form-label"
+          >
+            Bairro
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="bairro"
+            v-model="novoTutor.endereco.bairro"
+            required
+          />
+        </div>
+
+        <div class="col-12 col-md-4">
+          <!-- Cidade -->
+          <label
+            for="cidade"
+            class="form-label"
+          >
+            Cidade:
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="cidade"
+            v-model="novoTutor.endereco.cidade"
+            required
+          />
+        </div>
+        <!-- Estado -->
+        <div class="col-md-4">
+          <label
+            for="estado"
+            class="form-label"
+          >
+            Estado:
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="estado"
+            v-model="novoTutor.endereco.estado"
+            required
+          />
+        </div>
       </div>
     </form>
   </div>
