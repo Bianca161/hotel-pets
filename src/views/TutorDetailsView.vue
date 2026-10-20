@@ -90,6 +90,43 @@ onMounted(carregarTutorEPets);
         </div>
       </div>
 
+      <!-- Card com Endereço do Tutor -->
+      <div class="card p-4 shadow-sm">
+        <h4 class="card-title mb-3">Endereço</h4>
+
+        <div class="row g-3">
+          <div class="col-md-4">
+            <p class="mb-1 text-muted">Rua</p>
+            <p class="fw-semibold">{{ tutor.endereco.rua }}</p>
+          </div>
+
+          <div class="col-md-4">
+            <p class="mb-1 text-muted">Número</p>
+            <p class="fw-semibold">{{ tutor.endereco.numero }}</p>
+          </div>
+
+          <div class="col-md-4">
+            <p class="mb-1 text-muted">Bairro</p>
+            <p class="fw-semibold">{{ tutor.endereco.bairro }}</p>
+          </div>
+
+           <div class="col-md-4">
+            <p class="mb-1 text-muted">Cidade</p>
+            <p class="fw-semibold">{{ tutor.endereco.cidade }}</p>
+          </div>
+          
+          <div class="col-md-4">
+            <p class="mb-1 text-muted">Estado</p>
+            <p class="fw-semibold">{{ tutor.endereco.estado }}</p>
+          </div>
+
+          <div class="col-md-4">
+            <p class="mb-1 text-muted">CEP</p>
+            <p class="fw-semibold">{{ tutor.endereco.cep }}</p>
+          </div>
+        </div>
+      </div>
+
       <!-- Card com Pets Vinculados -->
       <div class="card p-4 shadow-sm">
         <div class="d-flex align-items-center gap-2 mb-3">

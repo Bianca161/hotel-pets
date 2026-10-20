@@ -21,6 +21,13 @@ const novoTutor = ref({
   cpf_cnpj: '',
   email: '',
   data: '',
+
+  pets: {
+    nomePet: '',
+    especiePet: '',
+    quantidadePet: 0
+},
+
   endereco: {
     rua: '',
     numero: '',
@@ -310,7 +317,7 @@ onMounted(carregarTutores);
             required
           />
         </div>
-      </div>
+        </div> 
     </form>
   </div>
 </template>

@@ -41,12 +41,6 @@
       "id": "0H4-UqztND8"
     },
     {
-      "nome": "Veloz",
-      "especie": "Tartaruga",
-      "tutorId": "2",
-      "id": "MIxVnDq-pjM"
-    },
-    {
       "nome": "Bolinha de neve",
       "especie": "Coelho",
       "tutorId": "1",
@@ -57,6 +51,12 @@
       "especie": "Gato",
       "tutorId": "2",
       "id": "UbfWEd29BIY"
+    },
+    {
+      "nome": "fgfgd",
+      "especie": "Hamster",
+      "tutorId": "1",
+      "id": "cFUqSpOvvtI"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

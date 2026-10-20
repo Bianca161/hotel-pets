@@ -31,21 +31,29 @@ import { RouterLink } from 'vue-router';
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div
-        id="petschool-navbar"
-        class="collapse navbar-collapse"
-      >
+      <div id="petschool-navbar"
+        class="collapse navbar-collapse">
+
         <div class="navbar-nav ms-auto">
           <RouterLink
             class="nav-link"
             to="/pets"
-            >Pets</RouterLink
-          >
+            >Pets</RouterLink>
+
           <RouterLink
             class="nav-link"
             to="/pets/novo"
-            >Novo pet</RouterLink
-          >
+            >Novo pet</RouterLink>
+
+          <RouterLink
+            class="nav-link"
+            to="/tutores"
+            >Tutores</RouterLink>
+
+           <RouterLink
+            class="nav-link"
+            to="/tutores/novo"
+            >Novo tutor</RouterLink>
         </div>
       </div>
     </div>

@@ -58,6 +58,7 @@ onMounted(carregarDados);
           <th>Ações</th>
         </tr>
       </thead>
+
       <tbody>
         <tr
           v-for="tutor in tutores"
@@ -68,19 +69,14 @@ onMounted(carregarDados);
           <td>{{ tutor.cpf_cnpj }}</td>
           <td>{{ tutor.telefone }}</td>
           <td>{{ tutor.email }}</td>
-          <td>{{ tutor.pets_quantidade }}</td>
-          <td>{{ tutor.nome_pets }}</td>
-          <td>{{ tutor.ações }}</td>
-          <td>
+         <td>{{ tutor.pets?.length || 0 }}</td>
+         <td>{{ tutor.pets?.map(p => p.nome).join(' / ') || 'Nenhum pet vinculado' }}</td>
+
+           <td>
             <RouterLink :to="`/tutores/${tutor.id}`" class="btn btn-sm">Visualizar</RouterLink>
-
-<button
-            class="btn btn-danger btn-sm"
-            @click="removerTutor(tutor.id)"
-          >
-            Remover
-          </button>
-
+            <button class="btn btn-danger btn-sm" @click="removerTutor(tutor.id)">
+              Remover
+            </button>
           </td>
         </tr>
       </tbody>
