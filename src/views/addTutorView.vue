@@ -66,23 +66,6 @@ onMounted(carregarTutores);
 
     <h1>Dados do Tutor </h1>
 
-      <!-- ID do tutor -->
-      <div class="col-md-6">
-        <label
-          for="ID"
-          class="form-label"
-        >
-          ID do Tutor:
-        </label>
-        <input
-          type="text"
-          class="form-control"
-          id="ID"
-          v-model="novoTutor.ID"
-          required
-        />
-      </div>
-
       <!-- nome do tutor -->
       <div class="col-md-6">
         <label
@@ -118,12 +101,11 @@ onMounted(carregarTutores);
       </div>
 
       <div class="col-12 d-flex gap-2">
-        <button
-          class="btn btn-success"
-          type="submit"
+        <RouterLink
+          class="btn btn-secondary" to="/tutores"
         >
           Cancelar
-        </button>
+        </RouterLink>
 
         <button
           class="btn btn-success"

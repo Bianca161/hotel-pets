@@ -62,13 +62,17 @@ onMounted(carregarDados);
           <td>{{ tutor.id }}</td>
           <td>{{ tutor.nome }}</td>
           <td>{{ tutor.telefone }}</td>
-          <td><RouterLink :to="`tutores/${tutor.id}`">Visualizar</RouterLink></td>
-          <button
-            class="btn btn-danger"
+          <td>
+            <RouterLink :to="`/tutores/${tutor.id}`" class="btn btn-sm btn-primary">Visualizar</RouterLink>
+
+<button
+            class="btn btn-danger btn-sm"
             @click="removerTutor(tutor.id)"
           >
             Remover
           </button>
+
+          </td>
         </tr>
       </tbody>
     </table>
