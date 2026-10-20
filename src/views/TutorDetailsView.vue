@@ -46,6 +46,7 @@ onMounted(carregarTutorEPets);
         <p><strong>Telefone:</strong> {{ tutor.telefone }}</p>
            <p><strong>CPF/CNPJ:</strong> {{ tutor.cpf_cnpj }}</p>
         <p><strong>Email:</strong> {{ tutor.email }}</p>
+        <p><strong>Data de Nascimento:</strong> {{ tutor.data }}</p>
       </div>
 
       <div class="card p-3 shadow-sm col-md-6">
@@ -55,15 +56,24 @@ onMounted(carregarTutorEPets);
           Este tutor ainda não possui pets cadastrados.
         </div>
 
+        
+
         <ul v-else class="list-group list-group-flush">
           <li
             v-for="pet in petsDoTutor"
             :key="pet.id"
             class="list-group-item d-flex justify-content-between align-items-center"
           >
-            <div>
-              <strong>{{ pet.nome }}</strong> — <span class="text-muted">{{ pet.especie }}</span>
-            </div>
+
+            <td>{{ tutor.id }}</td>
+          <td>{{ tutor.nome }}</td>
+          <td>{{ tutor.cpf_cnpj }}</td>
+          <td>{{ tutor.telefone }}</td>
+          <td>{{ tutor.email }}</td>
+          <td>{{ tutor.pets_quantidade }}</td>
+          <td>{{ tutor.nome_pets }}</td>
+          <td>{{ tutor.ações }}</td>
+            
             <RouterLink :to="`/pets/${pet.id}`" class="btn btn-sm btn-outline-primary">
               Ver Pet
             </RouterLink>
