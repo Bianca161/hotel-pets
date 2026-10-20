@@ -8,7 +8,7 @@ const API_URL = 'http://localhost:3000';
 const tutor = ref(null);
 const petsDoTutor = ref([]); 
 
-async function removerTutor(id) {
+async function removerPets(id) {
   const confirmarExclusao = window.confirm('Deseja realmente excluir este tutor?');
 
   if (confirmarExclusao) {
@@ -117,7 +117,7 @@ onMounted(carregarTutorEPets);
               <td>{{ pet.nome }}</td>
               <td>{{ pet.especie }}</td>
               <td>
-                <button class="btn btn-sm btn-outline-danger" @click="removerPet(pet.id)">
+                <button class="btn btn-sm btn-outline-danger" @click="removerPets(pet.id)">
                   Excluir
                 </button>
                 <RouterLink :to="`/pets/${pet.id}`" class="btn btn-sm btn-outline-primary">
