@@ -37,7 +37,7 @@ async function excluirPet(id) {
     await fetch(`${API_URL}/pets/${id}`, {
       method: 'DELETE',
     });
-    await carregarDados(); // recarregar a lista de pets após a exclusão  
+    await carregarDados(); // recarregar a lista de pets após a exclusão
   }
 }
 
@@ -80,7 +80,7 @@ onMounted(carregarDados);
           <td>{{ pet.especie }}</td>
           <td>{{ nomeDoTutor(pet.tutorId) }}</td>
           <td> <RouterLink :to="`pets/${pet.id}`">Visualizar</RouterLink></td>
-          <button class="btn btn-danger" @click="excluirPet(pet.id)">Excluir</button>
+          <button class="btn btn-danger btn-sm" @click="excluirPet(pet.id)" >Excluir</button>
         </tr>
       </tbody>
     </table>

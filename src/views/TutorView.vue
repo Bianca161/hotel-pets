@@ -63,7 +63,7 @@ onMounted(carregarDados);
           <td>{{ tutor.nome }}</td>
           <td>{{ tutor.telefone }}</td>
           <td>
-            <RouterLink :to="`/tutores/${tutor.id}`" class="btn btn-sm btn-primary">Visualizar</RouterLink>
+            <RouterLink :to="`/tutores/${tutor.id}`" class="btn btn-sm">Visualizar</RouterLink>
 
 <button
             class="btn btn-danger btn-sm"
