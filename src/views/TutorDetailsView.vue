@@ -1,5 +1,3 @@
-
-
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute, RouterLink } from 'vue-router';
@@ -9,6 +7,17 @@ const API_URL = 'http://localhost:3000';
 
 const tutor = ref(null);
 const petsDoTutor = ref([]); 
+
+async function removerTutor(id) {
+  const confirmarExclusao = window.confirm('Deseja realmente excluir este tutor?');
+
+  if (confirmarExclusao) {
+    await fetch(`${API_URL}/tutores/${id}`, {
+      method: 'DELETE',
+    });
+    await carregarTutorEPets(); // recarregar a lista de tutores após a exclusão
+  }
+}
 
 async function carregarTutorEPets() {
   const idTutor = route.params.id;
@@ -25,10 +34,14 @@ onMounted(carregarTutorEPets);
 
 <template>
   <div class="container py-4">
-    <header class="mb-4">
-      <RouterLink to="/tutores" class="btn btn-outline-secondary mb-3">Voltar
+    <header class="mb-4 d-flex justify-content-between align-items-center">
+      <div>
+        <h1 class="text-2xl font-bold">Detalhes do Tutor</h1>
+        <p class="text-body-secondary mb-0">Visualize os dados do tutor e seus pets vinculados.</p>
+      </div>
+      <RouterLink to="/tutores" class="btn btn-outline-secondary">
+       Voltar para Tutores
       </RouterLink>
-      <h1 class="text-2xl font-bold">Detalhes do Tutor</h1>
     </header>
 
     <div v-if="tutor === null" class="text-center py-5">
@@ -38,47 +51,82 @@ onMounted(carregarTutorEPets);
       <p class="mt-2">Carregando informações...</p>
     </div>
 
-    <div v-else class="row gap-4">
-      <div class="card p-3 shadow-sm col-md-5">
+    <div v-else class="d-flex flex-column gap-4">
+
+      <!-- Card com Dados do Tutor -->
+      <div class="card p-4 shadow-sm">
         <h4 class="card-title mb-3">Dados do Tutor</h4>
-        <p><strong>ID:</strong> {{ tutor.id }}</p>
-        <p><strong>Nome Completo:</strong> {{ tutor.nome }}</p>
-        <p><strong>Telefone:</strong> {{ tutor.telefone }}</p>
-           <p><strong>CPF/CNPJ:</strong> {{ tutor.cpf_cnpj }}</p>
-        <p><strong>Email:</strong> {{ tutor.email }}</p>
-        <p><strong>Data de Nascimento:</strong> {{ tutor.data }}</p>
+
+        <div class="row g-3">
+          <div class="col-md-4">
+            <p class="mb-1 text-muted">ID</p>
+            <p class="fw-semibold">{{ tutor.id }}</p>
+          </div>
+
+          <div class="col-md-4">
+            <p class="mb-1 text-muted">Nome Completo</p>
+            <p class="fw-semibold">{{ tutor.nome }}</p>
+          </div>
+
+          <div class="col-md-4">
+            <p class="mb-1 text-muted">CPF / CNPJ</p>
+            <p class="fw-semibold">{{ tutor.cpf_cnpj }}</p>
+          </div>
+
+           <div class="col-md-4">
+            <p class="mb-1 text-muted">Telefone / Celular / WhatsApp</p>
+            <p class="fw-semibold">{{ tutor.telefone }}</p>
+          </div>
+          
+          <div class="col-md-4">
+            <p class="mb-1 text-muted">E-mail</p>
+            <p class="fw-semibold">{{ tutor.email }}</p>
+          </div>
+
+          <div class="col-md-4">
+            <p class="mb-1 text-muted">Data de Nascimento</p>
+            <p class="fw-semibold">{{ tutor.data }}</p>
+          </div>
+        </div>
       </div>
 
-      <div class="card p-3 shadow-sm col-md-6">
-        <h4 class="card-title mb-3">Pets Vinculados</h4>
+      <!-- Card com Pets Vinculados -->
+      <div class="card p-4 shadow-sm">
+        <div class="d-flex align-items-center gap-2 mb-3">
+
+          <h4 class="card-title mb-0">Pets vinculados</h4>
+          <span class="badge bg-primary rounded-pill">{{ petsDoTutor.length }} pets</span>
+        </div>
 
         <div v-if="petsDoTutor.length === 0" class="alert alert-info mb-0">
           Este tutor ainda não possui pets cadastrados.
         </div>
 
-        
-
-        <ul v-else class="list-group list-group-flush">
-          <li
-            v-for="pet in petsDoTutor"
-            :key="pet.id"
-            class="list-group-item d-flex justify-content-between align-items-center"
-          >
-
-            <td>{{ tutor.id }}</td>
-          <td>{{ tutor.nome }}</td>
-          <td>{{ tutor.cpf_cnpj }}</td>
-          <td>{{ tutor.telefone }}</td>
-          <td>{{ tutor.email }}</td>
-          <td>{{ tutor.pets_quantidade }}</td>
-          <td>{{ tutor.nome_pets }}</td>
-          <td>{{ tutor.ações }}</td>
-            
-            <RouterLink :to="`/pets/${pet.id}`" class="btn btn-sm btn-outline-primary">
-              Ver Pet
-            </RouterLink>
-          </li>
-        </ul>
+        <table v-else class="table table-striped table-hover align-middle mb-0">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Espécie</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="pet in petsDoTutor" :key="pet.id">
+              <td>{{ pet.id }}</td>
+              <td>{{ pet.nome }}</td>
+              <td>{{ pet.especie }}</td>
+              <td>
+                <button class="btn btn-sm btn-outline-danger" @click="removerPet(pet.id)">
+                  Excluir
+                </button>
+                <RouterLink :to="`/pets/${pet.id}`" class="btn btn-sm btn-outline-primary">
+                  Visualizar Pet
+                </RouterLink>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
