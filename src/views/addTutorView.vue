@@ -9,13 +9,16 @@ const API_URL = 'http://localhost:3000';
 // lista vazia dos meus tutores
 const tutores = ref([]);
 
+// lista de cep dos meus tutores
+const cepApi = ref({});
+
 // criar objeto para salvar um novo tutor
 // propriedades: nome, telefone e email
 
 const novoTutor = ref({
   nome: '',
   telefone: '',
-  cpf: '',
+  cpf_cnpj: '',
   email: '',
   data: '',
   endereco: {
@@ -27,6 +30,19 @@ const novoTutor = ref({
     cep: '',
   },
 });
+
+// cpf direto
+async function buscaCep(cep) {
+  const API_CEP = 'https://viacep.com.br/ws';
+  const respostaCep = await fetch(`${API_CEP}/${cep}/json/`);
+
+  cepApi.value = await respostaCep.json();
+
+  novoTutor.value.endereco.rua = cepApi.value.logradouro;
+  novoTutor.value.endereco.bairro = cepApi.value.bairro;
+  novoTutor.value.endereco.cidade = cepApi.value.localidade;
+  novoTutor.value.endereco.estado = cepApi.value.uf;
+}
 
 // buscar todos os tutores que estão salvo na aplicação
 async function carregarTutores() {
@@ -102,7 +118,7 @@ onMounted(carregarTutores);
       <!-- CPF/CNPJ do tutor -->
       <div class="col-md-6">
         <label
-          for="cpf"
+          for="cpf_cnpj"
           class="form-label"
         >
           CPF/CNPJ
@@ -110,8 +126,8 @@ onMounted(carregarTutores);
         <input
           type="text"
           class="form-control"
-          id="cpf"
-          v-model="novoTutor.cpf"
+          id="cpf_cnpj"
+          v-model="novoTutor.cpf_cnpj"
           required
         />
       </div>

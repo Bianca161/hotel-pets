@@ -44,6 +44,8 @@ onMounted(carregarTutorEPets);
         <p><strong>ID:</strong> {{ tutor.id }}</p>
         <p><strong>Nome Completo:</strong> {{ tutor.nome }}</p>
         <p><strong>Telefone:</strong> {{ tutor.telefone }}</p>
+           <p><strong>CPF/CNPJ:</strong> {{ tutor.cpf_cnpj }}</p>
+        <p><strong>Email:</strong> {{ tutor.email }}</p>
       </div>
 
       <div class="card p-3 shadow-sm col-md-6">
