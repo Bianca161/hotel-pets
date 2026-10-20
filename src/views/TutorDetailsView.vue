@@ -1,40 +1,81 @@
+
+
 <script setup>
 import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, RouterLink } from 'vue-router';
 
 const route = useRoute();
 const API_URL = 'http://localhost:3000';
-const tutor = ref(null);
 
-async function carregarTutor() {
-  // pegando o id do tutor que está na url do navegador
+const tutor = ref(null);
+const petsDoTutor = ref([]); 
+
+async function carregarTutorEPets() {
   const idTutor = route.params.id;
 
-  // chamando a API para buscar o tutor pelo id
   const respostaTutor = await fetch(`${API_URL}/tutores/${idTutor}`);
-  console.log('respostaTutor', respostaTutor    );
-  // convertendo a resposta da API para JSON
   tutor.value = await respostaTutor.json();
-  console.log('tutor', tutor.value);
+
+  const respostaPets = await fetch(`${API_URL}/pets?tutorId=${idTutor}`);
+  petsDoTutor.value = await respostaPets.json();
 }
 
-onMounted(carregarTutor);
+onMounted(carregarTutorEPets);
 </script>
 
 <template>
-  <section v-if="tutor === null">
-    <p>Carregandooo.....</p>
-  </section>
+  <div class="container py-4">
+    <header class="mb-4">
+      <RouterLink to="/tutores" class="btn btn-outline-secondary mb-3">Voltar
+      </RouterLink>
+      <h1 class="text-2xl font-bold">Detalhes do Tutor</h1>
+    </header>
 
-  <section v-else>
-    <h1>Detalhes do Tutor</h1>
-    <p>Visualize os dados do tutor e seus pets vinculados.</p>
-    <h4>Dados do Tutor</h4>
+    <div v-if="tutor === null" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Carregando...</span>
+      </div>
+      <p class="mt-2">Carregando informações...</p>
+    </div>
 
-     <p>Id: {{ tutor.id }}</p>
-    <p>Nome Completo: {{ tutor.nome }}</p>
-    <p>Telefone: {{ tutor.telefone }}</p>
-  </section>
+    <div v-else class="row gap-4">
+      <div class="card p-3 shadow-sm col-md-5">
+        <h4 class="card-title mb-3">Dados do Tutor</h4>
+        <p><strong>ID:</strong> {{ tutor.id }}</p>
+        <p><strong>Nome Completo:</strong> {{ tutor.nome }}</p>
+        <p><strong>Telefone:</strong> {{ tutor.telefone }}</p>
+      </div>
+
+      <div class="card p-3 shadow-sm col-md-6">
+        <h4 class="card-title mb-3">Pets Vinculados</h4>
+
+        <div v-if="petsDoTutor.length === 0" class="alert alert-info mb-0">
+          Este tutor ainda não possui pets cadastrados.
+        </div>
+
+        <ul v-else class="list-group list-group-flush">
+          <li
+            v-for="pet in petsDoTutor"
+            :key="pet.id"
+            class="list-group-item d-flex justify-content-between align-items-center"
+          >
+            <div>
+              <strong>{{ pet.nome }}</strong> — <span class="text-muted">{{ pet.especie }}</span>
+            </div>
+            <RouterLink :to="`/pets/${pet.id}`" class="btn btn-sm btn-outline-primary">
+              Ver Pet
+            </RouterLink>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </template>
+
+<style scoped>
+.card {
+  border-radius: 0.5rem;
+}
+</style>
 
 
