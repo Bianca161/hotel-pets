@@ -3,10 +3,19 @@
     {
       "id": "1",
       "nome": "Ana",
-      "telefone": "47999990000",
-      "email": "ana@email.com",
+      "telefone": "47999378800",
       "cpf_cnpj": "12345678900",
-      "data": "1990-05-15"
+      "email": "ana@email.com",
+      "data": "1990-05-15",
+
+      "endereco": {
+        "rua": "Pedro Álveres Cabral",
+        "numero": " 123",
+        "bairro": "FLoresta ",
+        "cidade": "Joinville",
+        "estado": "SC",
+        "cep": "89212000"
+      }
     },
     {
       "id": "2",
@@ -14,7 +23,16 @@
       "telefone": "47988880000",
       "email": "carlos@email.com",
       "cpf_cnpj": "98765432100",
-      "data": "1985-10-20"
+      "data": "1985-10-20",
+
+      "endereco": {
+        "rua": "copacabana",
+        "numero": " 183",
+        "bairro": "Floresta",
+        "cidade": "Joinville",
+        "estado": "SC",
+        "cep": "89212000"
+      }
     },
     {
       "nome": "Bianca",
@@ -22,6 +40,7 @@
       "cpf_cnpj": "13781711951",
       "email": "biancaholanda@gmail.com",
       "data": "2009-11-23",
+      
       "endereco": {
         "rua": "Heinz Krelling",
         "numero": " 126",
@@ -39,24 +58,6 @@
       "especie": "Cachorro",
       "tutorId": "FgdWqvBAw08",
       "id": "0H4-UqztND8"
-    },
-    {
-      "nome": "Bolinha de neve",
-      "especie": "Coelho",
-      "tutorId": "1",
-      "id": "sG9-D90BitY"
-    },
-    {
-      "nome": "Babalu",
-      "especie": "Gato",
-      "tutorId": "2",
-      "id": "UbfWEd29BIY"
-    },
-    {
-      "nome": "fgfgd",
-      "especie": "Hamster",
-      "tutorId": "1",
-      "id": "cFUqSpOvvtI"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
