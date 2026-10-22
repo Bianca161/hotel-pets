@@ -1,16 +1,16 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref, computed } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 
 const router = useRouter(); // chamando meu router
 // chamando a minha API
 const API_URL = 'http://localhost:3000';
 
-// lista vazia dos meus tutores
-const tutores = ref([]);
-
 // lista de cep dos meus tutores
 const cepApi = ref({});
+
+// Adicionado: controle para exibir o erro somente após tentar salvar
+const formularioSubmetido = ref(false);
 
 // criar objeto para salvar um novo tutor
 // propriedades: nome, telefone e email
@@ -21,13 +21,6 @@ const novoTutor = ref({
   cpf_cnpj: '',
   email: '',
   data: '',
-
-  pets: {
-    nomePet: '',
-    especiePet: '',
-    quantidadePet: 0
-},
-
   endereco: {
     rua: '',
     numero: '',
@@ -38,11 +31,15 @@ const novoTutor = ref({
   },
 });
 
+// Adicionado: propriedades computadas para validar Nome e Telefone
+const nomeInvalido = computed(() => formularioSubmetido.value && !novoTutor.value.nome.trim());
+const telefoneInvalido = computed(() => formularioSubmetido.value && !novoTutor.value.telefone.trim());
+
 // cpf direto
 async function buscaCep(cep) {
   const API_CEP = 'https://viacep.com.br/ws';
-  const respostaCep = await fetch(`${API_CEP}/${cep}/json/`);
 
+  const respostaCep = await fetch(`${API_CEP}/${cep}/json/`);
   cepApi.value = await respostaCep.json();
 
   novoTutor.value.endereco.rua = cepApi.value.logradouro;
@@ -51,17 +48,15 @@ async function buscaCep(cep) {
   novoTutor.value.endereco.estado = cepApi.value.uf;
 }
 
-// buscar todos os tutores que estão salvo na aplicação
-async function carregarTutores() {
-  const resposta = await fetch(`${API_URL}/tutores`);
-
-  // converter os dados da minha API que estão em JSON para JS
-  tutores.value = await resposta.json();
-  console.table(tutores.value);
-}
-
-// salvar o novo tutor no sistema
 async function salvarTutor() {
+  // Adicionado: ativa a exibição dos erros
+  formularioSubmetido.value = true;
+
+  // Adicionado: impede o envio se Nome ou Telefone estiverem vazios
+  if (!novoTutor.value.nome.trim() || !novoTutor.value.telefone.trim()) {
+    return;
+  }
+
   await fetch(`${API_URL}/tutores`, {
     method: 'POST',
     headers: {
@@ -70,11 +65,8 @@ async function salvarTutor() {
     body: JSON.stringify(novoTutor.value),
   });
 
-  // redirecionar para a tela de listagem de Tutores
   router.push('/tutores');
 }
-
-onMounted(carregarTutores);
 </script>
 
 <template>
@@ -96,6 +88,7 @@ onMounted(carregarTutores);
     <form
       class="row"
       @submit.prevent="salvarTutor"
+      novalidate
     >
 
     <!---- parte do formulario -->
@@ -116,10 +109,14 @@ onMounted(carregarTutores);
         <input
           type="text"
           class="form-control"
+          :class="{ 'is-invalid': nomeInvalido }"
           id="nome"
           v-model="novoTutor.nome"
-          required
         />
+        <!-- Adicionado: mensagem exigida pelo professor -->
+        <div v-if="nomeInvalido" class="invalid-feedback">
+          Ops, campo obrigatório, por favor preencha-o!
+        </div>
       </div>
 
       <!-- CPF/CNPJ do tutor -->
@@ -150,10 +147,14 @@ onMounted(carregarTutores);
         <input
           type="text"
           class="form-control"
+          :class="{ 'is-invalid': telefoneInvalido }"
           id="telefone"
           v-model="novoTutor.telefone"
-          required
         />
+        <!-- Adicionado: mensagem exigida pelo professor -->
+        <div v-if="telefoneInvalido" class="invalid-feedback">
+          Ops, campo obrigatório, por favor preencha-o!
+        </div>
       </div>
 
       <!-- Email do tutor -->
@@ -200,8 +201,8 @@ onMounted(carregarTutores);
         </RouterLink>
 
         <button
-          class="btn btn-success
-          type mt-3"
+          class="btn btn-success mt-3"
+          type="submit"
         >
           Cadastrar Tutor
         </button>
@@ -317,7 +318,7 @@ onMounted(carregarTutores);
             required
           />
         </div>
-        </div> 
+        </div>
     </form>
   </div>
 </template>

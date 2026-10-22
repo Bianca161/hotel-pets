@@ -7,7 +7,6 @@
       "cpf_cnpj": "12345678900",
       "email": "ana@email.com",
       "data": "1990-05-15",
-
       "endereco": {
         "rua": "Pedro Álveres Cabral",
         "numero": " 123",
@@ -24,7 +23,6 @@
       "email": "carlos@email.com",
       "cpf_cnpj": "98765432100",
       "data": "1985-10-20",
-
       "endereco": {
         "rua": "copacabana",
         "numero": " 183",
@@ -40,7 +38,6 @@
       "cpf_cnpj": "13781711951",
       "email": "biancaholanda@gmail.com",
       "data": "2009-11-23",
-      
       "endereco": {
         "rua": "Heinz Krelling",
         "numero": " 126",

@@ -3,20 +3,47 @@ import { onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
 const tutores = ref([]); // lista de tutores vazia;
+const pets = ref([]);
 
 // chamando a minha API geral:
 const API_URL = 'http://localhost:3000';
 
 // chamar a minha API para listar todos os tutores;
 async function carregarDados() {
-  const respostaTutores = await fetch(`${API_URL}/tutores`);
-  tutores.value = await respostaTutores.json();
+  const [resTutores, resPets] = await Promise.all([
+    fetch(`${API_URL}/tutores`),
+    fetch(`${API_URL}/pets`),
+  ]);
 
-  console.table(tutores.value);
+  tutores.value = await resTutores.json();
+  pets.value = await resPets.json();
+}
+
+function obterPetsDoTutor(tutorId) {
+  return pets.value.filter((pet) => String(pet.tutorId) === String(tutorId));
+}
+
+function contarPets(tutorId) {
+  return obterPetsDoTutor(tutorId).length;
+}
+
+function nomesDosPets(tutorId) {
+  const listaPets = obterPetsDoTutor(tutorId);
+  if (listaPets.length === 0) return 'Nenhum pet vinculado';
+  return listaPets.map((p) => p.nome).join(' / ');
 }
 
 async function removerTutor(id) {
-  const confirmarExclusao = window.confirm('Deseja realmente excluir este tutor?');
+  // ADICIONADO: Verifica se o tutor possui pets vinculados antes de permitir a exclusão
+  const qtdPets = contarPets(id);
+  if (qtdPets > 0) {
+    alert(`Não é possível excluir este tutor pois ele possui ${qtdPets} pet(s) vinculado(s). Remova ou transfira os pets primeiro.`);
+    return;
+  }
+
+  const confirmarExclusao = window.confirm(
+    'Deseja realmente excluir este tutor?',
+  );
 
   if (confirmarExclusao) {
     await fetch(`${API_URL}/tutores/${id}`, {
@@ -30,111 +57,80 @@ onMounted(carregarDados);
 </script>
 
 <template>
-  <div>
-    <header class="mb-4">
-      <h1 class="text-2xl font-bold">Listagem de Tutores</h1>
-      <p class="text-body-secondary mb-0">
-        consulte os tutores e seus pets cadastrados.
-      </p>
+  <div class="container py-4">
+    <header class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h1 class="text-2xl font-bold">Listagem de Tutores</h1>
+        <p class="text-body-secondary mb-0">
+          Consulte os tutores e seus pets cadastrados.
+        </p>
+      </div>
+      <RouterLink
+        class="btn btn-primary"
+        to="/tutores/novo"
+      >
+        Cadastrar Tutor
+      </RouterLink>
     </header>
 
-    <RouterLink
-      class="btn btn-outline-primary"
-      to="tutores/novo"
-    >
-      Cadastrar Tutor
-    </RouterLink>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>CPF/CNPJ</th>
+            <th>Telefone</th>
+            <th>E-mail</th>
+            <th>Pets (Qtd)</th>
+            <th>Nomes dos Pets</th>
+            <th class="text-center">Ações</th>
+          </tr>
+        </thead>
 
-    <table class="table table-striped table-hover">
-      <thead>
-        <tr>
-          <th>id</th>
-          <th>Nome</th>
-          <th>CPF/CNPJ</th>
-          <th>Telefone</th>
-          <th>E-mail</th>
-          <th>Pets (Quantidade)</th>
-          <th>Nomes dos Pets</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
+        <tbody>
+          <tr
+            v-for="tutor in tutores"
+            :key="tutor.id"
+          >
+            <td>{{ tutor.id }}</td>
+            <td>{{ tutor.nome }}</td>
+            <td>{{ tutor.cpf_cnpj }}</td>
+            <td>{{ tutor.telefone }}</td>
+            <td>{{ tutor.email }}</td>
+            <td>
+              <span class="badge bg-info text-dark">
+                {{ contarPets(tutor.id) }}
+              </span>
+            </td>
 
-      <tbody>
-        <tr
-          v-for="tutor in tutores"
-          :key="tutor.id"
-        >
-          <td>{{ tutor.id }}</td>
-          <td>{{ tutor.nome }}</td>
-          <td>{{ tutor.cpf_cnpj }}</td>
-          <td>{{ tutor.telefone }}</td>
-          <td>{{ tutor.email }}</td>
-         <td>{{ tutor.pets?.length || 0 }}</td>
-         <td>{{ tutor.pets?.map(p => p.nome).join(' / ') || 'Nenhum pet vinculado' }}</td>
+            <td>{{ nomesDosPets(tutor.id) }}</td>
 
-           <td>
-            <RouterLink :to="`/tutores/${tutor.id}`" class="btn btn-sm">Visualizar</RouterLink>
-            <button class="btn btn-danger btn-sm" @click="removerTutor(tutor.id)">
-              Remover
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            <td class="text-center">
+              <div class="d-flex gap-2 justify-content-center">
+                <RouterLink
+                  :to="`/tutores/${tutor.id}`"
+                  class="btn btn-sm btn-outline-primary"
+                >
+                  Visualizar
+                </RouterLink>
+                <button
+                  class="btn btn-sm btn-outline-danger"
+                  @click="removerTutor(tutor.id)"
+                >
+                  Remover
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
 <style scoped>
-div {
-  padding: 20px;
-  background-color: #fff;
-}
-
-/* Alinha o cabeçalho à esquerda e joga o botão "Cadastrar Tutor" para o canto superior direito */
-div > header {
-  display: inline-block;
-  width: 70%;
-}
-
-div > .btn-outline-primary {
-  float: right;
-  margin-top: 10px;
-}
-
-/* Limpa o float para a tabela não subir */
 .table {
-  clear: both;
-  margin-top: 20px;
   vertical-align: middle;
-}
-
-/* Estilização e espaçamento dos botões de ação na tabela */
-tr td .btn-danger,
-tr td a {
-  margin-right: 5px;
-}
-
-/* Estilo visual para o link de Visualizar parecer um botão elegante */
-tr td a {
-  display: inline-block;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  color: #0d6efd;
-  border: 1px solid #0d6efd;
-  border-radius: 0.375rem;
-  text-decoration: none;
-  transition: all 0.2s ease-in-out;
-}
-
-tr td a:hover {
-  background-color: #0d6efd;
-  color: #fff;
-}
-
-/* Ajuste fino para o botão de Remover ficar no padrão Bootstrap */
-.btn-danger {
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  border-radius: 0.375rem;
 }
 </style>

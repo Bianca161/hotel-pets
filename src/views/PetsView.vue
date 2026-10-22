@@ -31,7 +31,9 @@ function nomeDoTutor(tutorId) {
 }
 
 async function excluirPet(id) {
-  const confirmarExclusao = window.confirm('Deseja realmente excluir este pet?');
+  const confirmarExclusao = window.confirm(
+    'Deseja realmente excluir este pet?',
+  );
 
   if (confirmarExclusao) {
     await fetch(`${API_URL}/pets/${id}`, {
@@ -67,7 +69,7 @@ onMounted(carregarDados);
           <th>Nome</th>
           <th>Espécie</th>
           <th>Tutor</th>
-           <th>Ações</th>
+          <th>Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -79,8 +81,19 @@ onMounted(carregarDados);
           <td>{{ pet.nome }}</td>
           <td>{{ pet.especie }}</td>
           <td>{{ nomeDoTutor(pet.tutorId) }}</td>
-          <td> <RouterLink :to="`pets/${pet.id}`">Visualizar</RouterLink></td>
-          <button class="btn btn-danger btn-sm" @click="excluirPet(pet.id)" >Excluir</button>
+          <td>
+            <RouterLink
+              :to="`pets/${pet.id}`"
+              class="btn btn-sm btn-outline-primary me-1"
+              >Visualizar</RouterLink
+            >
+            <button
+              class="btn btn-danger btn-sm"
+              @click="excluirPet(pet.id)"
+            >
+              Excluir
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>

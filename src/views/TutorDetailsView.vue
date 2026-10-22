@@ -6,7 +6,14 @@ const route = useRoute();
 const API_URL = 'http://localhost:3000';
 
 const tutor = ref(null);
-const petsDoTutor = ref([]); 
+const petsDoTutor = ref([]);
+
+// ADICIONADO: Objeto reativo para o novo pet vinculado a este tutor
+const novoPet = ref({
+  nome: '',
+  especie: '',
+  tutorId: ''
+});
 
 async function removerPets(id) {
   const confirmarExclusao = window.confirm('Deseja realmente excluir este pet?');
@@ -27,6 +34,30 @@ async function carregarTutorEPets() {
 
   const respostaPets = await fetch(`${API_URL}/pets?tutorId=${idTutor}`);
   petsDoTutor.value = await respostaPets.json();
+}
+
+// ADICIONADO: Função para cadastrar o pet diretamente para este tutor
+async function cadastrarPetParaTutor() {
+  const idTutor = route.params.id;
+
+  const petParaSalvar = {
+    nome: novoPet.value.nome,
+    especie: novoPet.value.especie,
+    tutorId: idTutor
+  };
+
+  await fetch(`${API_URL}/pets`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(petParaSalvar),
+  });
+
+  // Limpa o formulário e atualiza a lista de pets vinculados
+  novoPet.value.nome = '';
+  novoPet.value.especie = '';
+  await carregarTutorEPets();
 }
 
 onMounted(carregarTutorEPets);
@@ -77,7 +108,7 @@ onMounted(carregarTutorEPets);
             <p class="mb-1 text-muted">Telefone / Celular / WhatsApp</p>
             <p class="fw-semibold">{{ tutor.telefone }}</p>
           </div>
-          
+
           <div class="col-md-4">
             <p class="mb-1 text-muted">E-mail</p>
             <p class="fw-semibold">{{ tutor.email }}</p>
@@ -114,7 +145,7 @@ onMounted(carregarTutorEPets);
             <p class="mb-1 text-muted">Cidade</p>
             <p class="fw-semibold">{{ tutor.endereco.cidade }}</p>
           </div>
-          
+
           <div class="col-md-4">
             <p class="mb-1 text-muted">Estado</p>
             <p class="fw-semibold">{{ tutor.endereco.estado }}</p>
@@ -125,6 +156,40 @@ onMounted(carregarTutorEPets);
             <p class="fw-semibold">{{ tutor.endereco.cep }}</p>
           </div>
         </div>
+      </div>
+
+      <!-- ADICIONADO: Formulário para cadastrar novo pet diretamente para este tutor -->
+      <div class="card p-4 shadow-sm">
+        <h4 class="card-title mb-3">Cadastrar Novo Pet para este Tutor</h4>
+        <form @submit.prevent="cadastrarPetParaTutor" class="row g-3">
+          <div class="col-md-6">
+            <label for="nomePet" class="form-label">Nome do Pet</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nomePet"
+              v-model="novoPet.nome"
+              required
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label for="especiePet" class="form-label">Espécie</label>
+            <input
+              type="text"
+              class="form-control"
+              id="especiePet"
+              v-model="novoPet.especie"
+              required
+            />
+          </div>
+
+          <div class="col-12">
+            <button class="btn btn-success btn-sm" type="submit">
+              Salvar Pet
+            </button>
+          </div>
+        </form>
       </div>
 
       <!-- Card com Pets Vinculados -->
@@ -174,5 +239,3 @@ onMounted(carregarTutorEPets);
   border-radius: 0.5rem;
 }
 </style>
-
-
