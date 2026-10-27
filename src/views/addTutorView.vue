@@ -31,9 +31,48 @@ const novoTutor = ref({
   },
 });
 
+// Função para aplicar máscara de telefone (XX) XXXXX-XXXX ou (XX) XXXX-XXXX
+function aplicarMascaraTelefone(event) {
+  let valor = event.target.value.replace(/\D/g, '');
+  if (valor.length > 11) valor = valor.slice(0, 11);
+
+  if (valor.length > 10) {
+    valor = valor.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+  } else if (valor.length > 5) {
+    valor = valor.replace(/^(\d{2})(\d{4})(\d{0,4})$/, '($1) $2-$3');
+  } else if (valor.length > 2) {
+    valor = valor.replace(/^(\d{2})(\d{0,5})$/, '($1) $2');
+  }
+
+  novoTutor.value.telefone = valor;
+}
+
+// Função para aplicar máscara dinâmica de CPF (11 dígitos) ou CNPJ (14 dígitos)
+function aplicarMascaraCpfCnpj(event) {
+  let valor = event.target.value.replace(/\D/g, '');
+  if (valor.length > 14) valor = valor.slice(0, 14);
+
+  if (valor.length > 11) {
+    // Máscara CNPJ: XX.XXX.XXX/XXXX-XX
+    valor = valor.replace(
+      /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,
+      '$1.$2.$3/$4-$5',
+    );
+  } else if (valor.length > 9) {
+    // Máscara CPF: XXX.XXX.XXX-XX
+    valor = valor.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
+  }
+
+  novoTutor.value.cpf_cnpj = valor;
+}
+
 // Adicionado: propriedades computadas para validar Nome e Telefone
-const nomeInvalido = computed(() => formularioSubmetido.value && !novoTutor.value.nome.trim());
-const telefoneInvalido = computed(() => formularioSubmetido.value && !novoTutor.value.telefone.trim());
+const nomeInvalido = computed(
+  () => formularioSubmetido.value && !novoTutor.value.nome.trim(),
+);
+const telefoneInvalido = computed(
+  () => formularioSubmetido.value && !novoTutor.value.telefone.trim(),
+);
 
 // cpf direto
 async function buscaCep(cep) {
@@ -90,9 +129,8 @@ async function salvarTutor() {
       @submit.prevent="salvarTutor"
       novalidate
     >
-
-    <!---- parte do formulario -->
-     <div class="row">
+      <!---- parte do formulario -->
+      <div class="row">
         <div class="col-md-12 mt-3">
           <h1 class="text-2xl font-bold">Dados do Tutor</h1>
         </div>
@@ -114,7 +152,10 @@ async function salvarTutor() {
           v-model="novoTutor.nome"
         />
         <!-- Adicionado: mensagem exigida pelo professor -->
-        <div v-if="nomeInvalido" class="invalid-feedback">
+        <div
+          v-if="nomeInvalido"
+          class="invalid-feedback"
+        >
           Ops, campo obrigatório, por favor preencha-o!
         </div>
       </div>
@@ -132,7 +173,8 @@ async function salvarTutor() {
           class="form-control"
           id="cpf_cnpj"
           v-model="novoTutor.cpf_cnpj"
-          required
+          @input="aplicarMascaraCpfCnpj"
+          placeholder="000.000.000-00 ou 00.000.000/0001-00"
         />
       </div>
 
@@ -150,9 +192,13 @@ async function salvarTutor() {
           :class="{ 'is-invalid': telefoneInvalido }"
           id="telefone"
           v-model="novoTutor.telefone"
+          @input="aplicarMascaraTelefone"
         />
         <!-- Adicionado: mensagem exigida pelo professor -->
-        <div v-if="telefoneInvalido" class="invalid-feedback">
+        <div
+          v-if="telefoneInvalido"
+          class="invalid-feedback"
+        >
           Ops, campo obrigatório, por favor preencha-o!
         </div>
       </div>
@@ -166,11 +212,11 @@ async function salvarTutor() {
           Email
         </label>
         <input
-          type="text"
+          type="email"
           class="form-control"
           id="email"
           v-model="novoTutor.email"
-          required
+          placeholder="exemplo@email.com"
         />
       </div>
 
@@ -192,7 +238,6 @@ async function salvarTutor() {
       </div>
 
       <div class="col-12 d-flex gap-2">
-
         <RouterLink
           class="btn btn-secondary mt-3"
           to="/tutores"
@@ -318,7 +363,7 @@ async function salvarTutor() {
             required
           />
         </div>
-        </div>
+      </div>
     </form>
   </div>
 </template>
